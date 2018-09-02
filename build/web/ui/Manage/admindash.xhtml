@@ -1,0 +1,133 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <body>
+        <ui:composition template="./../home/header.xhtml">
+            <ui:define name="content">
+                #{empTaskAssignBean.genEmptype()}
+                <h:form id="frm1">
+                    <p:growl id="msgs1" showDetail="true" />
+                      <p:messages id="msgs" />
+                    <p:accordionPanel id="ap1">
+                        <p:tab title="Assign Task">
+                            <p:accordionPanel id="ap3">
+                                <p:tab title="Assign New Task">
+                                    <table border="0" id="tb1">
+                                        <tr> <td width="33%" align="right"> <h:outputLabel value="Employee Type:" for="emptype"/> </td>
+                                            <td width="40%" align="left"><p:selectOneMenu id="emptype" value="#{empTaskAssignBean.selectedEmpType}" required="true" style="width:260px">
+                                                    <f:selectItem itemLabel="Select Employee Type" itemValue="0"/>
+                                                    <p:ajax event="change" update="empDept,:frm1:msgs1" listener="#{empTaskAssignBean.genEmpdept()}"/>
+                                                    <f:selectItems value="#{empTaskAssignBean.emptypeMap}" />
+                                                </p:selectOneMenu> </td></tr>
+                                        <tr>
+                                        <td width="33%" align="right"> <h:outputLabel value="Department Name :" for="empDept"/> </td>
+                                        <td width="20%" align="left"><p:selectOneMenu id="empDept" value="#{empTaskAssignBean.selectedDeptId}" required="true" style="width:260px">
+                                                    <f:selectItem itemLabel="Select Employee Department" itemValue="0"/>
+                                                    <p:ajax event="change" update="empNmae,:frm1:msgs1" listener="#{empTaskAssignBean.genEmpName()}"/>
+                                                    <f:selectItems value="#{empTaskAssignBean.empdeptMap}" />
+                                                </p:selectOneMenu> </td></tr>
+                                        <tr>
+                                        <td width="33%" align="right"> <h:outputLabel value="Employee Name :" for="empNmae"/> </td>
+                                        <td width="20%" align="left"><p:selectOneMenu id="empNmae" value="#{empTaskAssignBean.selectedEmpName}" required="true" style="width:260px">
+                                                    <f:selectItem itemLabel="Select Employee Name" itemValue="0"/>
+                                                    <p:ajax event="change" listener="#{empTaskAssignBean.genEmpDetails()}"/>
+                                                    <f:selectItems value="#{empTaskAssignBean.empnameMap}" />
+                                                </p:selectOneMenu> </td></tr>
+                                        <tr><td width="10%" align="right"><h:outputLabel value="Task Name :" for="taskname"/></td>
+                                            <td width="20%" align="left"><p:inputText id="taskname" value="#{empTaskAssignBean.taskName}"  style="width:250px;"/></td></tr>
+                                                <tr>
+                                                    <td width="33%" align="right"> <h:outputLabel value="Task Description :" for="taskdesp"/> </td>
+                                                    <td width="20%" align="left">
+                                                        <p:inputTextarea rows="5" id="taskdesp" value="#{empTaskAssignBean.taskDescp}" cols="39" counter="display" maxlength="100" counterTemplate="{0} characters remaining." autoResize="false" />
+                                                 <h:outputText id="display" />
+                                            </td></tr>
+                                        <tr><td></td> 
+                                            <td width="30%" align="left"><p:commandButton value="Submit"  actionListener="#{empTaskAssignBean.submit()}"  style="width: 100px;" update=":frm1:msgs1">
+<!--                                                    <f:ajax event="click"  listener="myFunction()"/>-->
+                                                </p:commandButton>
+                                            </td>
+                                          
+                                        </tr>
+                                    </table>
+                                </p:tab>
+                                <p:tab title="View/Edit Assigned Task">
+                                    
+                                </p:tab>
+                            </p:accordionPanel>
+                        </p:tab>
+                        <p:tab title="Assigned Task Status">
+                            <p:accordionPanel id="ap4">
+                                <p:tab title="Employee Assigned Task Status">
+                                    <p:dataTable id="emplisttable" var="empTask" value="#{empTaskAssignBean.records}" paginator="true" rows="10"  >
+                                         
+                                        <f:facet name="header">
+                                            <table border="0">
+                                           <tr> <td width="33%" align="right"> <h:outputLabel value="Employee Type:" for="emptypeS"/> </td>
+                                            <td width="40%" align="left"><p:selectOneMenu id="emptypeS" value="#{empTaskAssignBean.selectedEmpType}" required="true" style="width:200px">
+                                                    <f:selectItem itemLabel="Select Employee Type" itemValue="0"/>
+                                                    <p:ajax event="change" update="empDeptS,:frm1:msgs1" listener="#{empTaskAssignBean.genEmpdept()}"/>
+                                                    <f:selectItems value="#{empTaskAssignBean.emptypeMap}" />
+                                                </p:selectOneMenu> </td></tr>
+                                        <tr>
+                                        <td width="33%" align="right"> <h:outputLabel value="Department Name :" for="empDeptS"/> </td>
+                                        <td width="20%" align="left"><p:selectOneMenu id="empDeptS" value="#{empTaskAssignBean.selectedDeptId}" required="true" style="width:200px">
+                                                    <f:selectItem itemLabel="Select Employee Departmrnt" itemValue="0"/>
+                                                    <p:ajax event="change" update="empNmaeS,:frm1:msgs1" listener="#{empTaskAssignBean.genEmpName()}"/>
+                                                    <f:selectItems value="#{empTaskAssignBean.empdeptMap}" />
+                                                </p:selectOneMenu> </td></tr>
+                                        <tr>
+                                        <td width="33%" align="right"> <h:outputLabel value="Employee Name :" for="empNmaeS"/> </td>
+                                        <td width="20%" align="left"><p:selectOneMenu id="empNmaeS" value="#{empTaskAssignBean.selectedEmpName}"  style="width:200px">
+                                                    <f:selectItem itemLabel="Select Employee Name" itemValue="0"/>
+                                                    <f:selectItems value="#{empTaskAssignBean.empnameMap}" />
+                                            </p:selectOneMenu> </td></tr></table>
+                                            <p:commandButton value="Submit" actionListener="#{empTaskAssignBean.employeeAssignTask()}" update="emplisttable,:frm1:msgs1" style="width: 100px;" />
+                                        </f:facet>
+                                        <p:column style="alignment-adjust: middle;alignment-baseline: central;">
+                                            <f:facet name="header">
+                                                <h:outputText value="Employee Id" />
+                                            </f:facet>
+                                            <h:outputText value="#{empTask.empID}" />
+                                        </p:column>
+                                        <p:column style="alignment-adjust: middle;alignment-baseline: central;">
+                                            <f:facet name="header">
+                                                <h:outputText value="Task Name" />
+                                            </f:facet>
+                                            <h:outputText value="#{empTask.taskName}" />
+                                        </p:column>
+                                        <p:column style="alignment-adjust: middle;alignment-baseline: central;">
+                                            <f:facet name="header">
+                                                <h:outputText value="Task Status" />
+                                            </f:facet>
+                                            <h:outputText value="#{empTask.status}" />
+                                        </p:column>
+                                        <p:column style="alignment-adjust: middle;alignment-baseline: central;">
+                                            <f:facet name="header">
+                                                <h:outputText value="Assigned Time" />
+                                            </f:facet>
+                                            <h:outputText value="#{empTask.assignedTime}" />
+                                        </p:column>
+                                        <p:column style="alignment-adjust: middle;alignment-baseline: central;">
+                                            <f:facet name="header">
+                                                <h:outputText value="Last Update" />
+                                            </f:facet>
+                                            <h:outputText value="#{empTask.lastUpdate}" />
+                                        </p:column>
+                                        
+                                        
+                                    </p:dataTable>
+   
+                                </p:tab>
+                            </p:accordionPanel>
+                        </p:tab>
+
+                    </p:accordionPanel>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

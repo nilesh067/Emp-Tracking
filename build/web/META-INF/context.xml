@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context antiJARLocking="true" path="/Emp-Tracking">
+ <Resource auth="Container" driverClassName="com.mysql.jdbc.Driver" maxActive="100" maxIdle="10" maxWait="-1" name="ETSusrdb" password="admin" type="javax.sql.DataSource" url="jdbc:mysql://localhost:3306/ets?noAccessToProcedureBodies=true" username="root"/>    
+    
+    
+</Context>

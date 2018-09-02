@@ -1,0 +1,181 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../home/header.xhtml">
+
+            <ui:define name="content">
+                #{empRegBean.genEmptype()}
+                <h:form id="frm1">
+                    <p:growl id="msgs1" showDetail="true" />
+                      <p:messages id="msgs" />
+                    <p:accordionPanel id="ap1">
+                        <p:tab title="Manage Employee">
+                            <p:accordionPanel id="ap3">
+                                <p:ajax event="tabChange" listener="#{empRegBean.onTabChange}" update="userlisttable,:frm1:msgs" />
+                                <p:tab title="Add New Employee">
+                                    <p:panel id="panel" header="Form" style="margin-bottom:10px;">
+                                    <table border="0" id="tb1">
+                                        <tr>
+                                            <td width="10%" align="right"><h:outputLabel value="First name :" for="empfname"/></td>
+                                            <td width="20%" align="left"><p:inputText id="empfname" value="#{empRegBean.empFName}" required="true" style="width:250px;"/></td>
+                                            <td width="10%" align="right"> <h:outputLabel value="Middle  name :" for="emplname"/></td>
+                                            <td width="20%" align="left"><p:inputText id="emplname" value="#{empRegBean.empLName}" required="true" style="width:250px;"/></td>
+                                            
+                                            
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td width="33%" align="right"> <h:outputLabel value="Employee Type:" for="emptype"/> </td>
+                                            <td width="20%" align="left"><p:selectOneMenu id="emptype" value="#{empRegBean.empType}" required="true" style="width:260px">
+                                                    <f:selectItem itemLabel="Select Employee Type" itemValue="0"/>
+                                                    <p:ajax event="change" update="empDept" listener="#{empRegBean.genEmpdept()}"  process="@this"/>
+                                                    <f:selectItems value="#{empRegBean.emptypeMap}" />
+                                                    
+                                                </p:selectOneMenu> </td></tr>
+                                        <tr><td width="33%" align="right"> <h:outputLabel value="Department Name :" for="empDept"/> </td>
+                                            <td width="20%" align="left"><p:selectOneMenu id="empDept" value="#{empRegBean.empDept}" required="true" style="width:260px">
+                                                    <f:selectItem itemLabel="Select Employee Departmrnt" itemValue="0"/>
+                                                    <f:selectItems value="#{empRegBean.empdeptMap}" />
+                                                </p:selectOneMenu> </td>
+                                        </tr>
+                                        <tr>  <td width="10%" align="right"> <h:outputLabel value="Mobile No :" for="mno"/> </td>
+                                            <td width="20%" align="left"><p:inputText id="mno" value="#{empRegBean.empMobile}" required="true" style="width:250px;"/></td>
+                                            <td width="10%" align="right"> <h:outputLabel value="Email Id:" for="eid"/> </td>
+                                            <td width="30%" align="left"><p:inputText id="eid" value="#{empRegBean.empEmail}" required="true" style="width:250px;"/></td></tr>
+                                        <tr>  <td width="10%" align="right">
+                                               
+                                                <p:outputLabel for="gender" value="Gender" /></td>
+                                            <td width="30%" align="left"> <p:selectOneRadio id="gender" required="true" value="#{empRegBean.empGender}">
+                                                    <f:selectItem itemLabel="Male" itemValue="   Male" />
+                                                    <f:selectItem itemLabel="Femail" itemValue="   Femail" />
+                                                </p:selectOneRadio>
+                                            </td>
+                                        </tr>
+                                        <tr>  <td width="10%" align="right">
+                                               
+                                                <p:outputLabel for="mstatus" value="Meritorial Status" /></td>
+                                            <td width="30%" align="left"> <p:selectOneRadio id="mstatus" required="true" value="#{empRegBean.empMerital}">
+                                                    <f:selectItem itemLabel="Married " itemValue="   Married" />
+                                                    <f:selectItem itemLabel="Unmarried" itemValue="   Unmarried" />
+                                                </p:selectOneRadio>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                           <td width="10%" align="right"><p:outputLabel value="Date/Time of Birth" for="startDate"/></td>
+                           <td width="30%" align="left"><p:calendar id="startDate" value="#{empRegBean.empDOB}"  pattern="yyyy-MM-dd HH:mm:ss"  style="width:250px;"/></td>
+                           <td width="30%" align="right"><p:outputLabel value="Date/Time of Joining" for="endDate"/></td>
+                           <td width="30%" align="left"><p:calendar id="endDate" value="#{empRegBean.empDOJ}"  pattern="yyyy-MM-dd HH:mm:ss"  style="width:250px;"/></td>
+                           
+                       </tr>
+                                        <tr>
+                                             <td width="10%" align="right"><h:outputLabel value="Employee Designation :" for="empdeg"/></td>
+                                             <td width="20%" align="left"><p:inputText id="empdeg" value="#{empRegBean.empDeg}" required="true" style="width:250px;"/></td>
+                                        </tr>
+                                        
+                                          
+                                        <tr><td></td> 
+                                            <td width="30%" align="left"><p:commandButton value="Submit"  actionListener="#{empRegBean.submit()}" style="width: 250px;" update=":frm1:msgs1">
+<!--                                                <p:ajax update="panel" resetValues="true" />-->
+                                                </p:commandButton>
+                                            </td>
+                                          
+                                        </tr>
+        
+ 
+                    
+                                          
+
+                                        <!--    <tr>
+
+                                                 <td width="10%" align="right"> <h:outputLabel value="Email :" for="email"/> </td>
+                                                 <td width="20%" align="left"><p:inputText  id="email" value="#{userManagerBean.newUser.email}" style="width:240px;" requiredMessage="Please enter your email address." validatorMessage="Invalid email format">
+                                                     <f:validateRegex	pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                                     </p:inputText>
+                                                    <p:watermark for="email" value="Email Address *" />
+                                                    <p:message for="email" />
+                                                 </td>
+                                                <td width="10%" align="right"> <h:outputLabel value="Mobile :" for="mobile"/> </td>
+                                                 <td width="30%" colspan="2" align="left"><p:inputText id="mobile" value="#{userManagerBean.newUser.mobile}" style="width:250px;"/></td>
+                                                <td width="30%" align="left"><p:commandButton value="Submit" actionListener="#{userManagerBean.registerNewUser()}" update="newuser,userlisttable,:frm1:msgs" style="width: 250px;" /></td>
+
+                                            </tr>-->
+                                    </table>
+                                    </p:panel>
+                                </p:tab>
+                                <p:tab title="View/Edit Employee Details">
+                                    <p:dataTable id="userlisttable" var="userobj" value="#{empRegBean.empList}" editable="true" paginator="true" rows="10" selectionMode="single" selection="#{empRegBean.selectedDEPTid}" rowKey="#{empRegBean.empId}">
+                                            <f:facet name="header">
+                                                List of Registered Department   <p:selectOneMenu id="selUser" value="#{empRegBean.selectedDEPTid}" style="width:150px">
+                                                    <p:ajax listener="#{empRegBean.empChange()}" update="userlisttable,:frm1:ap1,:frm1:msgs" />    
+                                                    <f:selectItem itemLabel="Select Department" itemValue="0"/>
+                                                        <f:selectItems value="#{empRegBean.ALLDept}" />
+                                                    </p:selectOneMenu>
+                                            </f:facet>
+                                            <p:column style="alignment-adjust: middle;alignment-baseline: central;">
+                                                <f:facet name="header">
+                                                    <h:outputText value="Emp Id" />
+                                                </f:facet>
+                                                <h:outputText value="#{userobj.empId}" />
+                                            </p:column>
+                                        <p:column filterBy="#{userobj.empName}" style="alignment-adjust: middle;alignment-baseline: central;">
+                                                <f:facet name="header">
+                                                    <h:outputText value="Emp Name" />
+                                                </f:facet>
+                                                 <p:cellEditor>
+                                                    <f:facet name="output">
+                                                        <h:outputText value="#{userobj.empName}" />
+                                                    </f:facet>
+                                                    <f:facet name="input">
+                                                        <h:inputText value="#{userobj.empName}"/>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                         <p:column style="alignment-adjust: middle;alignment-baseline: central;">
+                                                <f:facet name="header">
+                                                    <h:outputText value="Emp Dept" />
+                                                </f:facet>
+                                             <h:outputText value="#{userobj.empDept}" />
+                                            </p:column>
+                                        <p:column filterBy="#{userobj.empDeg}" style="alignment-adjust: middle;alignment-baseline: central;">
+                                                <f:facet name="header">
+                                                    <h:outputText value="Emp Desig" />
+                                                </f:facet>
+                                                 <p:cellEditor>
+                                                    <f:facet name="output">
+                                                        <h:outputText value="#{userobj.empDeg}" />
+                                                    </f:facet>
+                                                    <f:facet name="input">
+                                                        <h:inputText value="#{userobj.empDeg}"/>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                           
+                                            <p:column style="alignment-adjust: middle;alignment-baseline: central;">
+                                                <f:facet name="header">
+                                                    <h:outputText value="Emp Mobile" />
+                                                </f:facet>
+                                                <h:outputText value="#{userobj.empMobile}" />
+                                            </p:column>
+                                            <p:ajax event="rowEdit" listener="#{userManagerBean.onEdit}" update="userlisttable,:frm1:msgs" />
+                                           <p:column>
+                                                <p:rowEditor />
+                                           </p:column>
+                                        </p:dataTable>
+                                </p:tab>
+                                <!--                                 <p:tab title="Manage System Access"></p:tab>-->
+                            </p:accordionPanel>
+                        </p:tab>
+
+                    </p:accordionPanel>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

@@ -1,0 +1,164 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+     <body>
+
+        <ui:composition template="./../home/header.xhtml">
+
+            <ui:define name="content">
+                <h:form id="frm1">
+                    <p:growl id="msgs" showDetail="true" />
+                    <p:accordionPanel id="ap1">
+                        <p:tab title="Manage Users">
+                            <p:accordionPanel id="apusermgr">
+                                    <p:ajax event="tabChange" listener="#{userManagerBean.onTabChange}" update="userlisttable,:frm1:msgs" />
+                                    <p:tab title="Create New User">
+                                        <table border="0">
+                                             <tr>
+                                                <td width="10%" align="right"> <h:outputLabel value="User Role :" for="newuserrole"/> </td>
+                                                <td width="20%" align="left"><p:selectOneMenu id="newuserrole" value="#{userManagerBean.newUser.roleIdStr}" style="width:250px">
+                                                        <f:selectItem itemLabel="Select User Role" itemValue="0"/>
+                                                        <f:selectItems value="#{userManagerBean.roleMap}" />
+                                                    </p:selectOneMenu> </td>
+                                                 <td width="10%" align="right"> <h:outputLabel value="User Name :" for="newuser"/> </td>
+                                                 <td width="20%" align="left"><p:inputText id="newuser" value="#{userManagerBean.newUser.userName}" style="width:250px;"/></td>
+                                                <td width="10%" align="right"> <h:outputLabel value="Password :" for="newuserpwd"/> </td>
+                                                <td width="30%" align="left"><p:password id="newuserpwd" value="#{userManagerBean.newUser.password}" style="width:240px;"/></td>
+
+                                             </tr>
+                                            <tr>
+
+                                                 <td width="10%" align="right"> <h:outputLabel value="Email :" for="email"/> </td>
+                                                 <td width="20%" align="left"><p:inputText  id="email" value="#{userManagerBean.newUser.email}" style="width:240px;" requiredMessage="Please enter your email address." validatorMessage="Invalid email format">
+                                                     <f:validateRegex	pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                                     </p:inputText>
+                                                    <p:watermark for="email" value="Email Address *" />
+                                                    <p:message for="email" />
+                                                 </td>
+                                                <td width="10%" align="right"> <h:outputLabel value="Mobile :" for="mobile"/> </td>
+                                                 <td width="30%" colspan="2" align="left"><p:inputText id="mobile" value="#{userManagerBean.newUser.mobile}" style="width:250px;"/></td>
+                                                <td width="30%" align="left"><p:commandButton value="Submit" actionListener="#{userManagerBean.registerNewUser()}" update="newuser,userlisttable,:frm1:msgs" style="width: 250px;" /></td>
+
+                                            </tr>
+                                        </table>
+                                    </p:tab>
+                                    <p:tab title="View/Change User Details">
+                                        <p:dataTable id="userlisttable" var="userobj" value="#{userManagerBean.userList}" editable="true" paginator="true" rows="10" selectionMode="single" selection="#{userManagerBean.selectedUser}" rowKey="#{userobj.userId}">
+                                            <f:facet name="header">
+                                                List of Registered Users   <p:selectOneMenu id="selUser" value="#{userManagerBean.selectedUser}" style="width:150px">
+                                                    <p:ajax listener="#{userManagerBean.runQueries(false, true)}" update="userlisttable,:frm1:ap1,:frm1:msgs" />
+                                                        <f:selectItem itemLabel="Select User Name" itemValue="0"/>
+                                                        <f:selectItems value="#{userManagerBean.roleMap}" />
+                                                    </p:selectOneMenu>
+                                            </f:facet>
+                                            <p:column style="alignment-adjust: middle;alignment-baseline: central;">
+                                                <f:facet name="header">
+                                                    <h:outputText value="User Id" />
+                                                </f:facet>
+                                                <h:outputText value="#{userobj.userId}" />
+                                            </p:column>
+                                            <p:column style="alignment-adjust: middle;alignment-baseline: central;">
+                                                <f:facet name="header">
+                                                    <h:outputText value="Role Id" />
+                                                </f:facet>
+                                                <h:outputText value="#{userobj.roleId}" />
+                                            </p:column>
+                                             <p:column style="alignment-adjust: middle;alignment-baseline: central;">
+                                            <f:facet name="header">
+                                                    <h:outputText value="User Name" />
+                                                </f:facet>
+                                                 <h:outputText value="#{userobj.userName}" />
+                                            </p:column>
+                                            <p:column filterBy="#{userobj.email}" style="alignment-adjust: middle;alignment-baseline: central;">
+                                                <f:facet name="header">
+                                                    <h:outputText value="Email" />
+                                                </f:facet>
+                                                 <p:cellEditor>
+                                                    <f:facet name="output">
+                                                        <h:outputText value="#{userobj.email}" />
+                                                    </f:facet>
+                                                    <f:facet name="input">
+                                                        <h:inputText value="#{userobj.email}"/>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <p:column filterBy="#{userobj.password}" style="alignment-adjust: middle;alignment-baseline: central;">
+                                                <f:facet name="header">
+                                                    <h:outputText value="Password" />
+                                                </f:facet>
+                                                 <p:cellEditor>
+                                                    <f:facet name="output">
+                                                        <h:outputText value="#{userobj.password}" />
+                                                    </f:facet>
+                                                    <f:facet name="input">
+                                                        <h:inputText value="#{userobj.password}"/>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <p:column filterBy="#{userobj.status}" style="alignment-adjust: middle;alignment-baseline: central;">
+                                                <f:facet name="header">
+                                                    <h:outputText value="Status" />
+                                                </f:facet>
+                                                 <p:cellEditor>
+                                                    <f:facet name="output">
+                                                        <h:outputText value="#{userobj.status}" />
+                                                    </f:facet>
+                                                    <f:facet name="input">
+                                                        <h:inputText value="#{userobj.status}"/>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <p:column style="alignment-adjust: middle;alignment-baseline: central;">
+                                                <f:facet name="header">
+                                                    <h:outputText value="Mobile" />
+                                                </f:facet>
+                                                <h:outputText value="#{userobj.mobile}" />
+                                            </p:column>
+                                            <p:column style="alignment-adjust: middle;alignment-baseline: central;">
+                                                <f:facet name="header">
+                                                    <h:outputText value="Created On" />
+                                                </f:facet>
+                                                <h:outputText value="#{userobj.createdOn}" />
+                                            </p:column>
+                                            <p:column style="alignment-adjust: middle;alignment-baseline: central;">
+                                                <f:facet name="header">
+                                                    <h:outputText value="Last Update" />
+                                                </f:facet>
+                                                <h:outputText value="#{userobj.lastUpdate}" />
+                                            </p:column>
+                                             <p:column style="alignment-adjust: middle;alignment-baseline: central;">
+                                                <f:facet name="header">
+                                                    <h:outputText value="Company ID" />
+                                                </f:facet>
+                                                 <h:outputText value="#{userobj.companyId}" />
+                                            </p:column>
+
+                                            <p:ajax event="rowEdit" listener="#{userManagerBean.onEdit}" update="userlisttable,:frm1:msgs" />
+                                           <p:column>
+                                                <p:rowEditor />
+                                           </p:column>
+                                        </p:dataTable>
+                                    </p:tab>
+                                </p:accordionPanel>
+                        </p:tab> 
+                                                          
+                             
+<!--                            <p:tab title="Manage System Roles">
+                             <p:accordionPanel id="ap3">
+                                 <p:tab title="Register New User Role"></p:tab>
+                                 <p:tab title="View/Edit User Roles"></p:tab>
+                                 <p:tab title="Manage System Access"></p:tab>
+                             </p:accordionPanel>
+                        </p:tab>-->
+                        
+                     </p:accordionPanel>
+                </h:form>
+                </ui:define>
+        </ui:composition>
+    </body>
+</html>

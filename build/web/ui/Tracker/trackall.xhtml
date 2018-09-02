@@ -1,0 +1,119 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../home/header.xhtml">
+
+            <ui:define name="content">
+                
+                <h:form id="frm1">
+                    <p:growl id="msgs" showDetail="true" />
+                    <p:accordionPanel id="ap1">
+                        <p:tab title="Track All Employee">
+                            <p:accordionPanel id="ap3">
+                                <p:tab title="Track Employee By Name">
+                                   
+                                    <p:dataTable id="emplisttable" var="empobj" value="#{empTrack.records}" editable="true" paginator="true" rows="10" selectionMode="single"  rowKey="#{empobj.emp_id}">
+                                         
+                                        <f:facet name="header">
+                                            <h:outputLabel value="Employee Name" for="empName"/>
+                                            <p:inputText id="empName" value="#{empTrack.selectedName}" style="width:250px;">
+                                             <p:ajax  event="keyup" listener="#{empTrack.submit('name')}" update="empName,emplisttable"/>
+                                            </p:inputText>
+                                            <p:commandButton value="Submit" actionListener="#{empTrack.submit('name')}" update="emplisttable,:frm1:msgs" style="width: 250px;" />
+                                        </f:facet>
+                                        <p:column style="alignment-adjust: middle;alignment-baseline: central;">
+                                            <f:facet name="header">
+                                                <h:outputText value="Employee Id" />
+                                            </f:facet>
+                                            <h:outputText value="#{empobj.emp_id}" />
+                                        </p:column>
+                                        <p:column style="alignment-adjust: middle;alignment-baseline: central;">
+                                            <f:facet name="header">
+                                                <h:outputText value="Name" />
+                                            </f:facet>
+                                            <h:outputText value="#{empobj.emp_name}" />
+                                        </p:column>
+                                        <p:column style="alignment-adjust: middle;alignment-baseline: central;">
+                                            <f:facet name="header">
+                                                <h:outputText value="Department Name" />
+                                            </f:facet>
+                                            <h:outputText value="#{empobj.emp_dept}" />
+                                        </p:column>
+                                        <p:column style="alignment-adjust: middle;alignment-baseline: central;">
+                                            <f:facet name="header">
+                                                <h:outputText value="Mobile No" />
+                                            </f:facet>
+                                            <h:outputText value="#{empobj.emp_mobile}" />
+                                        </p:column>
+                                        <p:column style="alignment-adjust: middle;alignment-baseline: central;">
+                                            <f:facet name="header">
+                                                <h:outputText value="Employee Last Loc" />
+                                            </f:facet>
+                                            <h:outputText value="#{empobj.emp_location}" />
+                                        </p:column>
+                                        
+                                        
+                                    </p:dataTable>
+                                </p:tab>
+                                <p:tab title="Track Employee By Id">
+                                 <p:dataTable id="emplisttable2" var="empobj" value="#{empTrack.records}" editable="true" paginator="true" rows="10" selectionMode="single"  rowKey="#{empobj.emp_id}">
+                                      
+                                        <f:facet name="header">
+                                            <h:outputLabel value="Employee Id" for="empName"/>
+                                            <p:inputText id="empName" value="#{empTrack.selectedid}"  required="true" validatorMessage="Name is required" style="width:250px;">
+                                            <p:ajax event="change" listener="#{empTrack.submit('id')}" update="emplisttable2,:frm1:msgs"/>
+                                            </p:inputText>
+                                            <p:commandButton value="Submit" actionListener="#{empTrack.submit('id')}" update="emplisttable2,:frm1:msgs" icon="ui-icon-refresh" style="width: 250px;" />
+                                        </f:facet>
+                                        <p:column style="alignment-adjust: middle;alignment-baseline: central;">
+                                            <f:facet name="header">
+                                                <h:outputText value="Employee Id" />
+                                            </f:facet>
+                                            <h:outputText value="#{empobj.emp_id}" />
+                                        </p:column>
+                                        <p:column style="alignment-adjust: middle;alignment-baseline: central;">
+                                            <f:facet name="header">
+                                                <h:outputText value="Name" />
+                                            </f:facet>
+                                            <h:outputText value="#{empobj.emp_name}" />
+                                        </p:column>
+                                        <p:column style="alignment-adjust: middle;alignment-baseline: central;">
+                                            <f:facet name="header">
+                                                <h:outputText value="Department Name" />
+                                            </f:facet>
+                                            <h:outputText value="#{empobj.emp_dept}" />
+                                        </p:column>
+
+                                        <p:column style="alignment-adjust: middle;alignment-baseline: central;">
+                                            <f:facet name="header">
+                                                <h:outputText value="Mobile No" />
+                                            </f:facet>
+                                            <h:outputText value="#{empobj.emp_mobile}" />
+                                        </p:column>
+                                        <p:column style="alignment-adjust: middle;alignment-baseline: central;">
+                                            <f:facet name="header">
+                                                <h:outputText value="Employee Last Loc" />
+                                            </f:facet>
+                                            <h:outputText value="#{empobj.emp_location}" />
+                                        </p:column>
+                                        
+                                        
+                                    </p:dataTable>   
+                                </p:tab>
+                                <!--                                 <p:tab title="Manage System Access"></p:tab>-->
+                            </p:accordionPanel>
+                        </p:tab>
+
+                    </p:accordionPanel>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>
